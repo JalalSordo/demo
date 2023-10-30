@@ -11,7 +11,6 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 /**
  * Implements {@link some class}<br>
@@ -34,10 +33,8 @@ public class DataLoader implements ApplicationRunner {
     public void run(ApplicationArguments args) {
         Instant start = Instant.now();
 
-        for (int i = 0; i < 50000; i++) {
-           // Faker faker = new Faker();
-
-            Student student = new Student("some name "+i);
+        for (int i = 0; i < 300; i++) {
+            /*Student student = new Student("some name "+i);
             student.setEmail("email@email.com");
             student.setPhone("01245"+i);
             List<Mark> marks = new ArrayList<>();
@@ -46,6 +43,26 @@ public class DataLoader implements ApplicationRunner {
 
             student.setAddress(new Address("test", "test", "test"));
             log.info("Saving student: " + student.getName());
+            studentRepository.save(student);*/
+
+            Faker faker = new Faker();
+            String name = faker.name().fullName();
+            Student student = new Student(name);
+            student.setEmail(faker.internet().emailAddress());
+            student.setPhone(faker.phoneNumber().phoneNumber());
+            List<Mark> marks = new ArrayList<>();
+            marks.add(new Mark("Math", faker.number().numberBetween(0, 100)));
+            marks.add(new Mark("Science", faker.number().numberBetween(0, 100)));
+            marks.add(new Mark("English", faker.number().numberBetween(0, 100)));
+            marks.add(new Mark("History", faker.number().numberBetween(0, 100)));
+            marks.add(new Mark("Geography", faker.number().numberBetween(0, 100)));
+            marks.add(new Mark("Art", faker.number().numberBetween(0, 100)));
+            marks.add(new Mark("Music", faker.number().numberBetween(0, 100)));
+            marks.add(new Mark("PE", faker.number().numberBetween(0, 100)));
+            student.setMarks(marks);
+
+            student.setAddress(new Address(faker.address().streetAddress(), faker.address().city(), faker.address().country()));
+            log.info("Saving student: " + name);
             studentRepository.save(student);
         }
         Instant end = Instant.now();

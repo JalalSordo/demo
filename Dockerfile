@@ -12,7 +12,7 @@ RUN mvn dependency:go-offline
 
 COPY . .
 
-RUN mvn clean install -P native -DskipTests -Ob march=native
+RUN mvn clean install -P native -DskipTests
 
 # Second stage: Lightweight debian-slim image
 FROM debian:bookworm-slim
@@ -23,4 +23,4 @@ WORKDIR /app
 COPY --from=build /usr/src/app/target/demo /app/demo
 
 # Run the application
-CMD ["/usr/src/app/target/demo"]
+CMD ["/app/demo"]
